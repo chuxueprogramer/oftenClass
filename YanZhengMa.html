@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>生成验证码的页面</title>
+
+<!-- 使用validate第一步，导入js库 -->
+<script type="text/javascript" src = "./static/js/jquery-1.12.1.js"></script>
+<script type="text/javascript" src = "./static/js/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+	$().ready(
+			function(){
+				$("#form").validate({
+					rules:{
+						yzm:{
+							required:true,
+							equalTo:"#checkCode"
+						}
+					},
+					messages : {
+						yzm:{
+							required:"请输入验证码",
+							equalTo :"验证码不正确"
+						}
+					}
+				});
+			});
+			
+</script>
+
+<style type="text/css">
+.code {
+
+	background-image: url(code.jpg);
+	font-family: Arial;
+	font-style: italic;
+	color: #000;
+	border: 0;
+	padding-left:10px;
+	letter-spacing: 3px;
+	font-weight: bolder;
+	width:90px;
+	height:20px;
+	font-size:18px;
+}
+
+.unchanged {
+	border: 0;
+}
+</style>
+<script type="text/javascript">
+	var code; //在全局 定义验证码   
+	function createCode() {
+		code = "";
+		var codeLength = 6;//验证码的长度   
+		var checkCode = document.getElementById("checkCode");
+		var selectChar = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c',
+				'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+				'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');//所有候选组成验证码的字符，当然也可以用中文的   
+
+		for (var i = 0; i < codeLength; i++) {
+			var charIndex = Math.floor(Math.random() * 36); //Math.random()产生0-1之间的数， Math.floor()用于返回小于参数的最大整数
+			code += selectChar[charIndex];
+		}
+		//  alert(code);   
+		if (checkCode) {
+			checkCode.className = "code";
+			checkCode.value = code;
+		}
+
+	}
+</script>
+</head>
+<body onLoad="createCode()">
+	<form id="form" action="" method=post>
+		<label>请输入验证码：</label> <input type="text"  name = "yzm">
+		<input type = "text" id = "checkCode"  onclick="createCode()" class = "unchanged" >
+		<input type = "submit" >
+	</form>
+</body>
+</html>
